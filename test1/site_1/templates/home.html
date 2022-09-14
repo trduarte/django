@@ -1,0 +1,11 @@
+{% load static %}
+<html>
+    <head>
+        <title>Site Teste</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <h1 class="custom_h1">Cidades</h1>
+    {% for c in linha %}
+        {{ c }}<br>
+    {% endfor %}
+</html>
