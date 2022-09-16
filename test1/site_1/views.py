@@ -1,27 +1,17 @@
-from django.shortcuts import render
-import mysql.connector
-from mysql.connector import errorcode
-
-try:
-	cnx = mysql.connector.connect(user='root', password='1234', port='3306', database='world')
-	print ("success")
-except mysql.connector.Error as err:
-	if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-		print("Something is wrong with your user name or password")
-	elif err.errno == errorcode.ER_BAD_DB_ERROR:
-		print("Database does not exist")
-	else:
-		print(err)
-else:
-	cnx.close()
-
-
+from django.shortcuts import render, redirect
+from site_1.forms import UsersForm
 # Create your views here.
 
 def home(request):
-	cnx.reconnect()
-	cursor = cnx.cursor()
-	cursor.execute("select name from city")
+	return render(request,'home.html',{})
 
+def cadastro(request):
+	data = {}
+	data['form'] = UsersForm()
+	return render(request,'cadastro.html',data)
 
-	return render(request,'home.html',{'linha':cursor})
+def docad(request):
+	form = UsersForm(request.POST or None)
+	if form.is_valid():
+		form.save()
+		return redirect('cadastro')
